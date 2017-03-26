@@ -11,5 +11,8 @@
     "node": "6.9.2"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "socket.io": "^1.7.3"
+  }
 }
