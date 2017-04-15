@@ -18,6 +18,10 @@ var users = new Users();
 
 app.use(express.static(publicPath));
 
+app.get('/', function(req, res){
+    res.sendFile(__dirname + '/index.html');
+});
+
 io.on('connection', (socket) => {
     console.log('New user connected');
 
