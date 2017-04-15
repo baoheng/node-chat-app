@@ -25,6 +25,10 @@ io.on('connection', (socket) => {
         if (!isRealString(params.name) || !isRealString(params.room)) {
             return callback('Name and room name are required');
         }
+        var usersInThisRoom = users.getUserList(params.room);
+        if (usersInThisRoom && usersInThisRoom.filter((name) => name === params.name) >= 1) {
+            return callback('This name is already taken by a user in this room');
+        }
 
         socket.join(params.room);
         users.removeUser(socket.id);
@@ -36,6 +40,11 @@ io.on('connection', (socket) => {
         // broadcast message to everyone but this socket
         socket.broadcast.to(params.room).emit('newMessage', generateMessage('Admin', `${params.name} has joined`));
         callback();
+    });
+
+    socket.on('getRoomList', (message, callback) => {
+        var rooms = users.getRoomList();
+        callback(rooms);
     });
 
     socket.on('createMessage', (message, callback) => {
